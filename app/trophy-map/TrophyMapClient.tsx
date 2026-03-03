@@ -93,13 +93,13 @@ const ALL_STATE_FIPS = [
   "37","38","39","40","41","42","44","45","46","47","48","49","50","51","53","54","55","56"
 ];
 
-// Color scale: low → high (dark brown → brand-orange) — same for both metrics
+// Color scale: low → high (dark navy-green → brand accent #22C358)
 function getColor(value: number, min: number, max: number): string {
   if (value === 0) return "rgba(255,255,255,0.04)";
   const ratio = Math.min((value - min) / (max - min), 1);
-  const r = Math.round(40 + ratio * 172);
-  const g = Math.round(27 + ratio * 55);
-  const b = Math.round(15 + ratio * 11);
+  const r = Math.round(15 + ratio * 19);   // 15 → 34
+  const g = Math.round(45 + ratio * 150);  // 45 → 195
+  const b = Math.round(25 + ratio * 63);   // 25 → 88
   return `rgb(${r},${g},${b})`;
 }
 
@@ -342,7 +342,7 @@ export default function TrophyMapClient() {
             <span>No data</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded" style={{ background: "linear-gradient(to right, rgb(40,27,15), rgb(212,82,26))" }} />
+            <div className="w-3 h-3 rounded" style={{ background: "linear-gradient(to right, rgb(15,45,25), rgb(34,195,88))" }} />
             <span>Low → High</span>
           </div>
         </div>
@@ -436,7 +436,7 @@ export default function TrophyMapClient() {
                   {/* Outer pulse ring */}
                   <circle
                     r={hoveredOutfitter?.id === o.id || selectedOutfitter?.id === o.id ? 10 : 8}
-                    fill={selectedOutfitter?.id === o.id ? "#D4521A" : "rgba(212,82,26,0.25)"}
+                    fill={selectedOutfitter?.id === o.id ? "#22C358" : "rgba(34,195,88,0.25)"}
                     style={{ transition: "all 0.2s", cursor: "pointer" }}
                   />
                   {/* Pin dot */}

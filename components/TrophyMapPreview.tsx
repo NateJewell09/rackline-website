@@ -21,9 +21,9 @@ const MAX_S = 165;
 function getColor(score: number | undefined): string {
   if (!score) return "rgba(255,255,255,0.04)";
   const ratio = Math.min((score - MIN_S) / (MAX_S - MIN_S), 1);
-  const r = Math.round(40 + ratio * 172);
-  const g = Math.round(27 + ratio * 55);
-  const b = Math.round(15 + ratio * 11);
+  const r = Math.round(15 + ratio * 19);   // 15 → 34
+  const g = Math.round(45 + ratio * 150);  // 45 → 195
+  const b = Math.round(25 + ratio * 63);   // 25 → 88
   return `rgb(${r},${g},${b})`;
 }
 
@@ -109,9 +109,9 @@ export default function TrophyMapPreview({ showPins = false, className = "" }: P
       <div className="absolute bottom-3 right-3 flex items-center gap-1 z-10">
         <span className="text-white/40 text-[10px] mr-0.5">Low</span>
         {[0.1, 0.3, 0.5, 0.7, 1.0].map((ratio, i) => {
-          const r = Math.round(40 + ratio * 172);
-          const g = Math.round(27 + ratio * 55);
-          const b = Math.round(15 + ratio * 11);
+          const r = Math.round(15 + ratio * 19);
+          const g = Math.round(45 + ratio * 150);
+          const b = Math.round(25 + ratio * 63);
           return <div key={i} className="w-3.5 h-3.5 rounded-sm" style={{ backgroundColor: `rgb(${r},${g},${b})` }} />;
         })}
         <span className="text-white/40 text-[10px] ml-0.5">High</span>

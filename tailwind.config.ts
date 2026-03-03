@@ -10,15 +10,20 @@ const config: Config = {
     extend: {
       colors: {
         brand: {
-          green:     "#1B4332",
-          "green-mid": "#2D6A4F",
-          "green-light": "#40916C",
-          orange:    "#D4521A",
-          "orange-light": "#F4845F",
-          cream:     "#FEFAE0",
-          "cream-dark": "#F0EAD2",
-          dark:      "#0D1B0F",
-          "gray":    "#6B7280",
+          // Primary dark (navy-gray) — main body/card backgrounds
+          dark:        "#1F252E",
+          // Slate blue — hero sections, headers, primary surfaces
+          green:       "#435970",
+          "green-mid": "#4D6B8A",
+          "green-light": "#6B8FAF",
+          // Bright green — CTAs, accents, icons, links
+          orange:      "#22C358",
+          "orange-light": "#3BD96A",
+          // Cream / sage — light backgrounds & pills
+          cream:       "#F2F0ED",
+          "cream-dark": "#CEDAC8",
+          // Muted gray — secondary text
+          "gray":      "#67717E",
         },
       },
       fontFamily: {

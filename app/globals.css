@@ -7,7 +7,7 @@
     scroll-behavior: smooth;
   }
   body {
-    @apply bg-white text-brand-dark antialiased;
+    @apply bg-brand-dark text-white antialiased;
   }
   h1, h2, h3, h4 {
     @apply font-bold tracking-tight;
