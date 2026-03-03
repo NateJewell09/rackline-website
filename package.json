@@ -11,7 +11,8 @@
     "next": "14.2.5",
     "puppeteer": "^24.37.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-simple-maps": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20",

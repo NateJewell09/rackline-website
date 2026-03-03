@@ -1,9 +1,19 @@
 import Link from "next/link";
 
+const DeerLogoSm = () => (
+  <svg className="w-6 h-6 text-brand-orange" viewBox="0 0 64 64" fill="currentColor">
+    <path d="M32 36c-6 0-11 4-13 9h26c-2-5-7-9-13-9z"/>
+    <path d="M32 34c3.3 0 6-3.1 6-7s-2.7-7-6-7-6 3.1-6 7 2.7 7 6 7z"/>
+    <path d="M26 24c0 0-4-3-6-7-1-2-1-4 0-5 1-1 2 0 3 2 1 2 1 4 2 5l1-4c0-2 1-3 2-3s1 1 1 3l-1 5 2-3c1-2 2-3 3-2s0 3-1 5c-2 3-4 5-6 4z" opacity="0.9"/>
+    <path d="M38 24c0 0 4-3 6-7 1-2 1-4 0-5-1-1-2 0-3 2-1 2-1 4-2 5l-1-4c0-2-1-3-2-3s-1 1-1 3l1 5-2-3c-1-2-2-3-3-2s0 3 1 5c2 3 4 5 6 4z" opacity="0.9"/>
+  </svg>
+);
+
 const footerLinks = {
   Product: [
     { href: "/download", label: "Download App" },
     { href: "/deer-score-calculator", label: "Free Score Calculator" },
+    { href: "/trophy-map", label: "Trophy Heatmap" },
     { href: "/for-outfitters", label: "For Outfitters" },
   ],
   Learn: [
@@ -28,7 +38,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🦌</span>
+              <DeerLogoSm />
               <span className="text-white font-bold text-xl">
                 rackline<span className="text-brand-orange">.ai</span>
               </span>
