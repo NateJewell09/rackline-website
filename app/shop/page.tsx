@@ -39,7 +39,7 @@ const PRODUCTS = [
     ],
     price: "$69.99",
     priceNote: "+ options",
-    image: "https://rackline.ai/assets/3714919565277484524_1765831139008-BF5xKQiC.jpg",
+    image: "https://rackline.ai/assets/Gemini_Generated_Image_ojp0usojp0usojp0_copy_1765833655753-7v7A3wAp.png",
     cta: "Get Notified",
     soldOut: true,
   },

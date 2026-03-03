@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import EmailCapture from "@/components/EmailCapture";
 import AppDownloadCTA from "@/components/AppDownloadCTA";
+import TrophyMapPreview from "@/components/TrophyMapPreview";
 
 export const metadata: Metadata = {
   title: "rackline.ai for Hunting Outfitters — AI Deer Scoring for Your Clients",
@@ -167,50 +168,9 @@ export default function ForOutfittersPage() {
                 </div>
               </div>
 
-              {/* Mock map body with heat gradient + pins */}
+              {/* Real US choropleth heatmap with outfitter pins */}
               <div className="relative h-52 overflow-hidden">
-                {/* Heat gradient background representing states */}
-                <svg viewBox="0 0 400 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
-                  <defs>
-                    <radialGradient id="hot1" cx="45%" cy="40%" r="25%">
-                      <stop offset="0%" stopColor="#D4521A" stopOpacity="0.9"/>
-                      <stop offset="100%" stopColor="#D4521A" stopOpacity="0"/>
-                    </radialGradient>
-                    <radialGradient id="hot2" cx="55%" cy="55%" r="20%">
-                      <stop offset="0%" stopColor="#D4521A" stopOpacity="0.7"/>
-                      <stop offset="100%" stopColor="#D4521A" stopOpacity="0"/>
-                    </radialGradient>
-                    <radialGradient id="hot3" cx="35%" cy="60%" r="18%">
-                      <stop offset="0%" stopColor="#D4521A" stopOpacity="0.6"/>
-                      <stop offset="100%" stopColor="#D4521A" stopOpacity="0"/>
-                    </radialGradient>
-                  </defs>
-                  <rect width="400" height="200" fill="#0D1B0F"/>
-                  {/* State-like rectangles with heat colors */}
-                  <rect x="160" y="50" width="60" height="50" rx="2" fill="rgb(180,60,20)" opacity="0.85"/>
-                  <rect x="225" y="55" width="55" height="45" rx="2" fill="rgb(160,55,18)" opacity="0.8"/>
-                  <rect x="100" y="60" width="55" height="45" rx="2" fill="rgb(140,50,16)" opacity="0.75"/>
-                  <rect x="165" y="105" width="55" height="45" rx="2" fill="rgb(120,45,14)" opacity="0.7"/>
-                  <rect x="60" y="65" width="35" height="40" rx="2" fill="rgb(100,40,12)" opacity="0.65"/>
-                  <rect x="285" y="50" width="50" height="50" rx="2" fill="rgb(90,35,10)" opacity="0.6"/>
-                  <rect x="60" y="110" width="100" height="40" rx="2" fill="rgb(70,30,12)" opacity="0.55"/>
-                  <rect x="225" y="105" width="55" height="45" rx="2" fill="rgb(60,28,14)" opacity="0.5"/>
-                  <rect x="290" y="105" width="60" height="50" rx="2" fill="rgb(50,27,15)" opacity="0.45"/>
-                  {/* Radial heat overlays */}
-                  <rect width="400" height="200" fill="url(#hot1)" opacity="0.4"/>
-                  <rect width="400" height="200" fill="url(#hot2)" opacity="0.3"/>
-                  <rect width="400" height="200" fill="url(#hot3)" opacity="0.25"/>
-                  {/* Outfitter pins */}
-                  {[
-                    [182, 72], [246, 68], [128, 78], [192, 118], [78, 80], [302, 68]
-                  ].map(([cx, cy], i) => (
-                    <g key={i}>
-                      <circle cx={cx} cy={cy} r="7" fill="rgba(212,82,26,0.3)"/>
-                      <circle cx={cx} cy={cy} r="3.5" fill="#D4521A" stroke="#0D1B0F" strokeWidth="0.8"/>
-                      <line x1={cx} y1={cx > 0 ? cy + 3.5 : cy} x2={cx} y2={cy + 7} stroke="#D4521A" strokeWidth="1.2"/>
-                    </g>
-                  ))}
-                </svg>
+                <TrophyMapPreview showPins className="h-52" />
               </div>
 
               {/* Mock outfitter card pop-up */}

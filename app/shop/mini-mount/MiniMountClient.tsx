@@ -1,13 +1,10 @@
 "use client";
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
+// Single product photo from rackline.ai — shows all three replica styles
 const GALLERY = [
-  "https://rackline.ai/assets/3714919565277484524_1765831139008-BF5xKQiC.jpg",
-  "https://rackline.ai/assets/3185433670372043149_1765831267805-DbcsWNQx.jpg",
-  "https://rackline.ai/assets/3960944527855219634_1765831279549-BeXfKxYs.jpg",
-  "https://rackline.ai/assets/8823482900351479239_1765831282915-DNUjdKM9.jpg",
-  "https://rackline.ai/assets/1953692906623179131_1765831264223-CQK9jJ6j.jpg",
+  "https://rackline.ai/assets/Gemini_Generated_Image_ojp0usojp0usojp0_copy_1765833655753-7v7A3wAp.png",
 ];
 
 type MountStyle = "euro" | "shoulder" | "full";
@@ -119,19 +116,22 @@ export default function MiniMountClient() {
               </div>
             </div>
 
-            <div className="grid grid-cols-5 gap-2">
-              {GALLERY.map((src, i) => (
-                <button
-                  key={i}
-                  onClick={() => setActivePhoto(i)}
-                  className={`rounded-lg overflow-hidden border-2 transition-all aspect-square ${
-                    activePhoto === i ? "border-brand-orange" : "border-white/10 hover:border-white/30"
-                  }`}
-                >
-                  <img src={src} alt={`View ${i+1}`} className="w-full h-full object-cover" />
-                </button>
-              ))}
-            </div>
+            {/* Only show thumbnail strip when there are multiple photos */}
+            {GALLERY.length > 1 && (
+              <div className="grid grid-cols-5 gap-2">
+                {GALLERY.map((src, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setActivePhoto(i)}
+                    className={`rounded-lg overflow-hidden border-2 transition-all aspect-square ${
+                      activePhoto === i ? "border-brand-orange" : "border-white/10 hover:border-white/30"
+                    }`}
+                  >
+                    <img src={src} alt={`View ${i+1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* ── RIGHT: Config + Waitlist ── */}

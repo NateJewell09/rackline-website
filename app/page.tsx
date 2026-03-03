@@ -3,6 +3,7 @@ import Link from "next/link";
 import AppDownloadCTA from "@/components/AppDownloadCTA";
 import EmailCapture from "@/components/EmailCapture";
 import TrophyCarousel from "@/components/TrophyCarousel";
+import TrophyMapPreview from "@/components/TrophyMapPreview";
 
 export const metadata: Metadata = {
   title: "rackline.ai — AI Whitetail Deer Scoring App | Score Any Buck From a Photo",
@@ -325,37 +326,10 @@ export default function HomePage() {
                 Explore the Trophy Map
               </Link>
             </div>
-            {/* Map preview mockup */}
-            <div className="bg-brand-dark/60 rounded-2xl p-8 border border-white/10">
-              <div className="flex items-center justify-between mb-5">
-                <span className="text-white font-semibold text-sm">Trophy Heatmap — USA</span>
-                <span className="text-brand-orange text-xs font-semibold uppercase tracking-wide">Live Data</span>
-              </div>
-              {/* Simplified US map mockup */}
-              <div className="relative bg-brand-dark rounded-xl p-4 mb-4 overflow-hidden">
-                <svg viewBox="0 0 400 240" className="w-full opacity-90">
-                  {/* Background */}
-                  <rect width="400" height="240" fill="#0D1B0F" />
-                  {/* Simplified state blocks - purely decorative representation */}
-                  {[
-                    { x:40,y:40,w:55,h:40,o:0.3 },{ x:100,y:35,w:50,h:45,o:0.5 },{ x:155,y:30,w:55,h:50,o:0.8 },{ x:215,y:25,w:50,h:55,o:0.6 },{ x:270,y:30,w:60,h:45,o:0.4 },
-                    { x:35,y:85,w:60,h:40,o:0.4 },{ x:100,y:85,w:50,h:40,o:0.7 },{ x:155,y:85,w:55,h:40,o:1.0 },{ x:215,y:85,w:50,h:40,o:0.9 },{ x:270,y:78,w:60,h:42,o:0.5 },
-                    { x:35,y:130,w:60,h:38,o:0.2 },{ x:100,y:130,w:50,h:38,o:0.6 },{ x:155,y:130,w:55,h:38,o:0.8 },{ x:215,y:130,w:50,h:38,o:0.7 },{ x:270,y:125,w:60,h:38,o:0.3 },
-                    { x:50,y:173,w:55,h:35,o:0.1 },{ x:110,y:173,w:50,h:35,o:0.4 },{ x:165,y:173,w:55,h:35,o:0.6 },{ x:225,y:173,w:50,h:35,o:0.5 },{ x:280,y:168,w:55,h:35,o:0.2 },
-                  ].map((r, i) => (
-                    <rect key={i} x={r.x} y={r.y} width={r.w} height={r.h} rx="3"
-                      fill={`rgba(212,82,26,${r.o})`} stroke="rgba(13,27,15,0.8)" strokeWidth="1.5" />
-                  ))}
-                </svg>
-                {/* Legend */}
-                <div className="absolute bottom-6 right-6 flex items-center gap-1">
-                  <span className="text-white/40 text-xs mr-1">Low</span>
-                  {[0.1,0.3,0.5,0.7,1.0].map((o, i) => (
-                    <div key={i} className="w-4 h-4 rounded" style={{ backgroundColor: `rgba(212,82,26,${o})` }} />
-                  ))}
-                  <span className="text-white/40 text-xs ml-1">High</span>
-                </div>
-              </div>
+            {/* Map preview */}
+            <div className="bg-brand-dark/60 rounded-2xl p-6 border border-white/10">
+              {/* Real US choropleth heatmap */}
+              <TrophyMapPreview className="mb-4" />
               <div className="grid grid-cols-3 gap-3">
                 {[
                   { label: "Iowa", score: "164.2\"", count: "2,841" },
