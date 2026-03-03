@@ -1,22 +1,11 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
 
-// Trophy room entries - in production these come from the rackline.ai API
-// Placeholder hunting/whitetail photos from Unsplash (free to use)
-const TROPHY_ENTRIES = [
-  { id: 1, hunter: "Tyler M.",    state: "Iowa",      score: "184 2/8\"", age: "6.5 yr", img: "https://images.unsplash.com/photo-1551269901-5c5e14c25df7?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 2, hunter: "Jason K.",    state: "Texas",     score: "171 4/8\"", age: "5.5 yr", img: "https://images.unsplash.com/photo-1594736797933-d0501ba2fe65?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 3, hunter: "Derek S.",    state: "Wisconsin", score: "163 6/8\"", age: "4.5 yr", img: "https://images.unsplash.com/photo-1516222338250-863216ce01ea?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 4, hunter: "Brandon H.",  state: "Illinois",  score: "178 0/8\"", age: "6.5 yr", img: "https://images.unsplash.com/photo-1472396961693-142e6e269027?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 5, hunter: "Mike R.",     state: "Kansas",    score: "169 2/8\"", age: "5.5 yr", img: "https://images.unsplash.com/photo-1509382397698-5c12a8aba58b?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 6, hunter: "Chad W.",     state: "Missouri",  score: "156 4/8\"", age: "4.5 yr", img: "https://images.unsplash.com/photo-1440778303588-435521a3e3f7?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 7, hunter: "Luke P.",     state: "Ohio",      score: "147 2/8\"", age: "3.5 yr", img: "https://images.unsplash.com/photo-1575550959106-5a7defe28b56?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 8, hunter: "Seth A.",     state: "Nebraska",  score: "162 0/8\"", age: "5.5 yr", img: "https://images.unsplash.com/photo-1518173946687-a4c8892bbd9f?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 9, hunter: "Travis L.",   state: "Indiana",   score: "155 6/8\"", age: "4.5 yr", img: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 10, hunter: "Cole B.",    state: "Kentucky",  score: "143 4/8\"", age: "3.5 yr", img: "https://images.unsplash.com/photo-1426604966848-d7adac402bff?w=400&h=400&fit=crop&crop=center", verified: true },
-  { id: 11, hunter: "Zach F.",    state: "Michigan",  score: "138 2/8\"", age: "3.5 yr", img: "https://images.unsplash.com/photo-1542401886-65d6c61db217?w=400&h=400&fit=crop&crop=center", verified: false },
-  { id: 12, hunter: "Nick T.",    state: "Minnesota", score: "152 0/8\"", age: "4.5 yr", img: "https://images.unsplash.com/photo-1500916434205-0c77489c6cf7?w=400&h=400&fit=crop&crop=center", verified: true },
-];
+interface TrophyEntry {
+  username: string;
+  score: string;
+  imageUrl: string;
+}
 
 function StarRating() {
   return (
@@ -31,12 +20,33 @@ function StarRating() {
 }
 
 export default function TrophyCarousel() {
+  const [entries, setEntries] = useState<TrophyEntry[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // How many cards visible at once (responsive handled via grid)
+  useEffect(() => {
+    fetch("/api/trophy-room")
+      .then((r) => r.json())
+      .then((data: TrophyEntry[]) => {
+        // Filter out entries with no valid username or image
+        const filtered = data
+          .filter(
+            (e) =>
+              e.username &&
+              e.username !== "#N/A" &&
+              e.username.trim() !== "" &&
+              e.imageUrl
+          )
+          .slice(0, 24); // take top 24 for the carousel
+        setEntries(filtered);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
+
   const VISIBLE = 4;
-  const maxIndex = TROPHY_ENTRIES.length - VISIBLE;
+  const maxIndex = Math.max(0, entries.length - VISIBLE);
 
   const next = useCallback(() => {
     setActiveIndex((i) => (i >= maxIndex ? 0 : i + 1));
@@ -48,16 +58,42 @@ export default function TrophyCarousel() {
 
   // Auto-scroll
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || entries.length === 0) return;
     const timer = setInterval(next, 3000);
     return () => clearInterval(timer);
-  }, [isPaused, next]);
+  }, [isPaused, next, entries.length]);
 
-  const visible = TROPHY_ENTRIES.slice(activeIndex, activeIndex + VISIBLE);
+  const visible = entries.slice(activeIndex, activeIndex + VISIBLE);
   // Wrap around if near end
-  const displayed = visible.length < VISIBLE
-    ? [...visible, ...TROPHY_ENTRIES.slice(0, VISIBLE - visible.length)]
-    : visible;
+  const displayed =
+    visible.length < VISIBLE
+      ? [...visible, ...entries.slice(0, VISIBLE - visible.length)]
+      : visible;
+
+  // Loading skeleton
+  if (loading) {
+    return (
+      <section className="py-16 px-4 bg-brand-dark">
+        <div className="max-w-6xl mx-auto">
+          <div className="mb-8">
+            <div className="h-3 w-32 bg-white/10 rounded animate-pulse mb-3" />
+            <div className="h-8 w-72 bg-white/10 rounded animate-pulse" />
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[...Array(4)].map((_, i) => (
+              <div
+                key={i}
+                className="rounded-2xl bg-white/5 animate-pulse"
+                style={{ aspectRatio: "3/4" }}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (entries.length === 0) return null;
 
   return (
     <section className="py-16 px-4 bg-brand-dark overflow-hidden">
@@ -105,14 +141,14 @@ export default function TrophyCarousel() {
         >
           {displayed.map((entry, i) => (
             <div
-              key={`${entry.id}-${i}`}
+              key={`${entry.username}-${i}`}
               className="group relative rounded-2xl overflow-hidden bg-brand-green/20 border border-white/10 hover:border-brand-orange/40 transition-all duration-300"
               style={{ aspectRatio: "3/4" }}
             >
               {/* Photo */}
               <img
-                src={entry.img}
-                alt={`${entry.hunter} ${entry.score} ${entry.state}`}
+                src={entry.imageUrl}
+                alt={`${entry.username} – ${entry.score}" B&C`}
                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500"
                 loading="lazy"
               />
@@ -120,31 +156,24 @@ export default function TrophyCarousel() {
               {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
 
-              {/* Verified badge */}
-              {entry.verified && (
-                <div className="absolute top-3 right-3 flex items-center gap-1 bg-brand-orange/90 rounded-full px-2 py-0.5">
-                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
-                  </svg>
-                  <span className="text-white text-xs font-bold">AI Verified</span>
-                </div>
-              )}
+              {/* AI Verified badge */}
+              <div className="absolute top-3 right-3 flex items-center gap-1 bg-brand-orange/90 rounded-full px-2 py-0.5">
+                <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd"/>
+                </svg>
+                <span className="text-white text-xs font-bold">AI Verified</span>
+              </div>
 
               {/* Score badge */}
               <div className="absolute top-3 left-3 bg-black/70 border border-white/10 rounded-lg px-2.5 py-1.5">
-                <div className="text-brand-orange font-bold text-sm leading-none">{entry.score}</div>
-                <div className="text-white/50 text-xs mt-0.5">B&C</div>
+                <div className="text-brand-orange font-bold text-sm leading-none">{entry.score}&quot;</div>
+                <div className="text-white/50 text-xs mt-0.5">B&amp;C</div>
               </div>
 
               {/* Bottom info */}
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <StarRating />
-                <div className="text-white font-bold text-sm mt-1.5">{entry.hunter}</div>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-white/50 text-xs">{entry.state}</span>
-                  <span className="text-white/20 text-xs">·</span>
-                  <span className="text-white/50 text-xs">{entry.age}</span>
-                </div>
+                <div className="text-white font-bold text-sm mt-1.5">@{entry.username}</div>
               </div>
             </div>
           ))}
@@ -152,11 +181,15 @@ export default function TrophyCarousel() {
 
         {/* Dot indicators */}
         <div className="flex items-center justify-center gap-1.5 mt-6">
-          {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+          {Array.from({ length: Math.min(maxIndex + 1, 12) }).map((_, i) => (
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
-              className={`rounded-full transition-all duration-300 ${i === activeIndex ? "w-5 h-1.5 bg-brand-orange" : "w-1.5 h-1.5 bg-white/20 hover:bg-white/40"}`}
+              className={`rounded-full transition-all duration-300 ${
+                i === activeIndex
+                  ? "w-5 h-1.5 bg-brand-orange"
+                  : "w-1.5 h-1.5 bg-white/20 hover:bg-white/40"
+              }`}
               aria-label={`Go to slide ${i + 1}`}
             />
           ))}
