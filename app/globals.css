@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-white text-brand-dark antialiased;
+  }
+  h1, h2, h3, h4 {
+    @apply font-bold tracking-tight;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-brand-orange text-white font-bold px-6 py-3 rounded-lg hover:bg-brand-orange-light transition-colors duration-200 shadow-md;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 bg-white text-brand-green font-bold px-6 py-3 rounded-lg border-2 border-brand-green hover:bg-brand-cream transition-colors duration-200;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 text-white font-semibold px-6 py-3 rounded-lg border-2 border-white/40 hover:border-white hover:bg-white/10 transition-colors duration-200;
+  }
+  .section-heading {
+    @apply text-3xl md:text-4xl font-bold text-brand-green leading-tight;
+  }
+  .section-subheading {
+    @apply text-lg text-brand-gray mt-3 leading-relaxed;
+  }
+  .card {
+    @apply bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200;
+  }
+  .badge {
+    @apply inline-block text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full;
+  }
+}
+
+/* Smooth fade-in for sections */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 0.5s ease forwards;
+}
