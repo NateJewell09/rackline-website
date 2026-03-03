@@ -65,21 +65,14 @@ const ALL_STATE_FIPS = [
   "37","38","39","40","41","42","44","45","46","47","48","49","50","51","53","54","55","56"
 ];
 
-// Color scale: low → high (brand-orange intensity)
-function getColor(value: number, min: number, max: number, metric: "harvested" | "score"): string {
+// Color scale: low → high (dark brown → brand-orange) — same for both metrics
+function getColor(value: number, min: number, max: number): string {
   if (value === 0) return "rgba(255,255,255,0.04)";
   const ratio = Math.min((value - min) / (max - min), 1);
-  if (metric === "harvested") {
-    const r = Math.round(40 + ratio * 172);
-    const g = Math.round(27 + ratio * 55);
-    const b = Math.round(15 + ratio * 11);
-    return `rgb(${r},${g},${b})`;
-  } else {
-    const r = Math.round(27 + ratio * 185);
-    const g = Math.round(67 + ratio * 15);
-    const b = Math.round(15 + ratio * 11);
-    return `rgb(${r},${g},${b})`;
-  }
+  const r = Math.round(40 + ratio * 172);
+  const g = Math.round(27 + ratio * 55);
+  const b = Math.round(15 + ratio * 11);
+  return `rgb(${r},${g},${b})`;
 }
 
 // ─── LEADERBOARD ──────────────────────────────────────────────────────────────
@@ -214,8 +207,8 @@ export default function TrophyMapClient() {
     const d = STATE_DATA[fips];
     if (!d) return "rgba(255,255,255,0.04)";
     return metric === "harvested"
-      ? getColor(d.harvested, minH, maxH, "harvested")
-      : getColor(d.avgScore, minS, maxS, "score");
+      ? getColor(d.harvested, minH, maxH)
+      : getColor(d.avgScore, minS, maxS);
   }, [metric, minH, maxH, minS, maxS]);
 
   return (
