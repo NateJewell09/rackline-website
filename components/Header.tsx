@@ -19,6 +19,7 @@ const DeerLogo = () => (
 const navLinks = [
   { href: "/trophy-map",          label: "Trophy Map" },
   { href: "/deer-score-calculator", label: "Score Calculator" },
+  { href: "/shop",                label: "Shop" },
   { href: "/for-outfitters",      label: "For Outfitters" },
   { href: "/blog",                label: "Blog" },
 ];

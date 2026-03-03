@@ -302,11 +302,15 @@ export default function TrophyMapClient() {
   const [outfitterTooltip, setOutfitterTooltip] = useState<{ x: number; y: number } | null>(null);
 
   const harvestedValues = Object.values(STATE_DATA).map((d) => d.harvested);
-  const scoreValues = Object.values(STATE_DATA).map((d) => d.avgScore);
+  // Exclude Alaska (FIPS "02") from score scale — its moose/caribou scores (312") are
+  // outliers vs lower-48 whitetail (118–164") and would compress the entire heatmap.
+  const scoreValues = Object.values(STATE_DATA).filter((d) => d.fips !== "02").map((d) => d.avgScore);
   const minH = Math.min(...harvestedValues), maxH = Math.max(...harvestedValues);
   const minS = Math.min(...scoreValues), maxS = Math.max(...scoreValues);
 
   const getFillColor = useCallback((fips: string) => {
+    // Alaska is excluded from the score heatmap (outlier species)
+    if (metric === "score" && fips === "02") return "rgba(255,255,255,0.04)";
     const d = STATE_DATA[fips];
     if (!d) return "rgba(255,255,255,0.04)";
     return metric === "harvested"
