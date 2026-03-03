@@ -11,6 +11,12 @@ export const metadata: Metadata = {
 
 const benefits = [
   {
+    icon: "📍",
+    title: "Get on the Trophy Heatmap",
+    description:
+      "When hunters browse our interactive state & county trophy map to decide where to book a hunt, your outfitter pin is right there — in the counties with the highest scores and harvest numbers.",
+  },
+  {
     icon: "⚡",
     title: "Instant Buck Scores at Camp",
     description:
@@ -63,8 +69,12 @@ const testimonials = [
 
 const faqs = [
   {
+    q: "How do I get my outfitter listed on the Trophy Heatmap?",
+    a: "Email nate@rackline.ai with your outfitter name, location, and species. We'll drop your pin on the map and build out your listing — including your success rate, acreage, and booking link — so hunters browsing the map can find and contact you directly.",
+  },
+  {
     q: "Is there a special pricing tier for outfitters?",
-    a: "We're actively building an outfitter plan. Contact us at nate@rackline.ai to discuss your operation's needs and get early access to the outfitter dashboard.",
+    a: "We're actively building an outfitter plan that includes trophy map placement, branded score reports, and multi-user accounts. Contact us at nate@rackline.ai to get early access pricing.",
   },
   {
     q: "Can I score deer for multiple clients from one account?",
@@ -108,6 +118,128 @@ export default function ForOutfittersPage() {
               >
                 Try Free Now
               </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── MAP VISIBILITY SECTION ── */}
+      <section className="py-20 px-4 bg-brand-dark overflow-hidden">
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          {/* Left: Copy */}
+          <div>
+            <span className="inline-block text-xs font-semibold uppercase tracking-widest text-brand-orange mb-4">
+              The Biggest Reason to List
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white leading-tight mb-5">
+              Put Your Pin Where Hunters Are Already Looking
+            </h2>
+            <p className="text-white/70 leading-relaxed mb-5">
+              Hunters use rackline.ai&apos;s trophy heatmap to research <em>where to hunt</em> before they ever book a trip — browsing which states and counties produce the biggest bucks. Your outfitter pin lives right on that map.
+            </p>
+            <p className="text-white/50 leading-relaxed mb-8">
+              When a hunter zooms into Boone County Iowa, sees 164" average B&C scores, and spots your pin — that&apos;s a booked hunt you didn&apos;t have to chase. Passive, intent-driven discovery from 25,000+ active hunters.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a href="mailto:nate@rackline.ai" className="inline-flex items-center justify-center gap-2 bg-brand-orange hover:bg-brand-orange/90 text-white font-bold rounded-xl py-3 px-6 text-sm transition-colors">
+                Get Your Pin on the Map →
+              </a>
+              <Link href="/trophy-map" className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/15 border border-white/10 text-white font-semibold rounded-xl py-3 px-6 text-sm transition-colors">
+                View the Trophy Map
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: Map mockup */}
+          <div className="relative">
+            <div className="bg-brand-green/20 border border-white/10 rounded-2xl overflow-hidden">
+              {/* Mock map header */}
+              <div className="bg-white/5 border-b border-white/10 px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 rounded-full bg-brand-orange" />
+                  <span className="text-white/60 text-xs font-semibold uppercase tracking-widest">Whitetail Trophy Heatmap</span>
+                </div>
+                <div className="flex items-center gap-1.5 bg-brand-orange/20 border border-brand-orange/30 rounded-full px-2.5 py-1">
+                  <svg className="w-2.5 h-2.5 text-brand-orange" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
+                  </svg>
+                  <span className="text-brand-orange text-xs font-bold">Outfitters ON</span>
+                </div>
+              </div>
+
+              {/* Mock map body with heat gradient + pins */}
+              <div className="relative h-52 overflow-hidden">
+                {/* Heat gradient background representing states */}
+                <svg viewBox="0 0 400 200" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                  <defs>
+                    <radialGradient id="hot1" cx="45%" cy="40%" r="25%">
+                      <stop offset="0%" stopColor="#D4521A" stopOpacity="0.9"/>
+                      <stop offset="100%" stopColor="#D4521A" stopOpacity="0"/>
+                    </radialGradient>
+                    <radialGradient id="hot2" cx="55%" cy="55%" r="20%">
+                      <stop offset="0%" stopColor="#D4521A" stopOpacity="0.7"/>
+                      <stop offset="100%" stopColor="#D4521A" stopOpacity="0"/>
+                    </radialGradient>
+                    <radialGradient id="hot3" cx="35%" cy="60%" r="18%">
+                      <stop offset="0%" stopColor="#D4521A" stopOpacity="0.6"/>
+                      <stop offset="100%" stopColor="#D4521A" stopOpacity="0"/>
+                    </radialGradient>
+                  </defs>
+                  <rect width="400" height="200" fill="#0D1B0F"/>
+                  {/* State-like rectangles with heat colors */}
+                  <rect x="160" y="50" width="60" height="50" rx="2" fill="rgb(180,60,20)" opacity="0.85"/>
+                  <rect x="225" y="55" width="55" height="45" rx="2" fill="rgb(160,55,18)" opacity="0.8"/>
+                  <rect x="100" y="60" width="55" height="45" rx="2" fill="rgb(140,50,16)" opacity="0.75"/>
+                  <rect x="165" y="105" width="55" height="45" rx="2" fill="rgb(120,45,14)" opacity="0.7"/>
+                  <rect x="60" y="65" width="35" height="40" rx="2" fill="rgb(100,40,12)" opacity="0.65"/>
+                  <rect x="285" y="50" width="50" height="50" rx="2" fill="rgb(90,35,10)" opacity="0.6"/>
+                  <rect x="60" y="110" width="100" height="40" rx="2" fill="rgb(70,30,12)" opacity="0.55"/>
+                  <rect x="225" y="105" width="55" height="45" rx="2" fill="rgb(60,28,14)" opacity="0.5"/>
+                  <rect x="290" y="105" width="60" height="50" rx="2" fill="rgb(50,27,15)" opacity="0.45"/>
+                  {/* Radial heat overlays */}
+                  <rect width="400" height="200" fill="url(#hot1)" opacity="0.4"/>
+                  <rect width="400" height="200" fill="url(#hot2)" opacity="0.3"/>
+                  <rect width="400" height="200" fill="url(#hot3)" opacity="0.25"/>
+                  {/* Outfitter pins */}
+                  {[
+                    [182, 72], [246, 68], [128, 78], [192, 118], [78, 80], [302, 68]
+                  ].map(([cx, cy], i) => (
+                    <g key={i}>
+                      <circle cx={cx} cy={cy} r="7" fill="rgba(212,82,26,0.3)"/>
+                      <circle cx={cx} cy={cy} r="3.5" fill="#D4521A" stroke="#0D1B0F" strokeWidth="0.8"/>
+                      <line x1={cx} y1={cx > 0 ? cy + 3.5 : cy} x2={cx} y2={cy + 7} stroke="#D4521A" strokeWidth="1.2"/>
+                    </g>
+                  ))}
+                </svg>
+              </div>
+
+              {/* Mock outfitter card pop-up */}
+              <div className="mx-4 mb-4 -mt-2 bg-brand-dark border border-brand-orange/40 rounded-xl p-4 shadow-xl relative z-10">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <svg className="w-4 h-4 text-brand-orange shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
+                    </svg>
+                    <div>
+                      <div className="text-white font-bold text-sm">Heartland Trophy Hunts</div>
+                      <div className="text-white/40 text-xs">Iowa · Whitetail · 2,400 ac</div>
+                    </div>
+                  </div>
+                  <div className="bg-brand-orange text-white text-xs font-bold rounded-lg px-2.5 py-1 shrink-0">
+                    Book →
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 mt-3">
+                  <div className="text-white/50 text-xs">★ 4.9 (47 reviews)</div>
+                  <div className="text-brand-orange text-xs font-semibold">92% success rate</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Floating stat badge */}
+            <div className="absolute -top-4 -right-4 bg-brand-orange text-white text-xs font-bold rounded-2xl px-4 py-2.5 shadow-xl">
+              25,000+ active hunters
+              <div className="text-white/70 font-normal text-xs mt-0.5">see this map every week</div>
             </div>
           </div>
         </div>
@@ -210,7 +342,7 @@ export default function ForOutfittersPage() {
               Get Outfitter Pricing &amp; Early Access
             </h2>
             <p className="section-subheading mb-8">
-              We&apos;re building features specifically for outfitters — multi-user accounts, branded score reports, client management, and more. Get in early.
+              Get your pin on the trophy heatmap, access outfitter pricing, and get early access to multi-user accounts, branded score reports, and client management tools.
             </p>
             <a href="mailto:nate@rackline.ai" className="btn-primary text-base py-4 px-8 inline-flex">
               Contact Us: nate@rackline.ai →

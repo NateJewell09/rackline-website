@@ -1,6 +1,34 @@
 "use client";
 import { useState, useCallback } from "react";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
+
+// ─── OUTFITTER DATA (sample — "Your outfitter could be here") ─────────────────
+type Outfitter = {
+  id: number;
+  name: string;
+  state: string;
+  coordinates: [number, number]; // [lng, lat]
+  species: string;
+  acres: string;
+  rating: number;
+  reviews: number;
+  successRate: string;
+  contact: string;
+  sample: boolean;
+};
+
+const OUTFITTERS: Outfitter[] = [
+  { id: 1, name: "Heartland Trophy Hunts",       state: "Iowa",     coordinates: [-93.6,  41.9], species: "Whitetail",             acres: "2,400 ac", rating: 4.9, reviews: 47, successRate: "92%", contact: "nate@rackline.ai", sample: true },
+  { id: 2, name: "Prairie Thunder Outfitters",   state: "Kansas",   coordinates: [-98.4,  38.7], species: "Whitetail",             acres: "3,800 ac", rating: 4.8, reviews: 33, successRate: "88%", contact: "nate@rackline.ai", sample: true },
+  { id: 3, name: "Big Timber Whitetail",         state: "Wisconsin",coordinates: [-89.8,  44.5], species: "Whitetail",             acres: "1,600 ac", rating: 4.7, reviews: 28, successRate: "85%", contact: "nate@rackline.ai", sample: true },
+  { id: 4, name: "South Texas Brush Country",    state: "Texas",    coordinates: [-99.2,  28.9], species: "Whitetail / Exotics",   acres: "7,200 ac", rating: 4.9, reviews: 61, successRate: "94%", contact: "nate@rackline.ai", sample: true },
+  { id: 5, name: "Flint Hills Trophy Bucks",     state: "Kansas",   coordinates: [-96.8,  38.4], species: "Whitetail",             acres: "4,100 ac", rating: 4.8, reviews: 39, successRate: "90%", contact: "nate@rackline.ai", sample: true },
+  { id: 6, name: "Crossroads Whitetail",         state: "Illinois", coordinates: [-90.3,  39.8], species: "Whitetail",             acres: "1,900 ac", rating: 4.9, reviews: 52, successRate: "91%", contact: "nate@rackline.ai", sample: true },
+  { id: 7, name: "Sandhills Trophy Outfitters",  state: "Nebraska", coordinates: [-100.5, 41.8], species: "Whitetail / Mule Deer", acres: "5,600 ac", rating: 4.7, reviews: 24, successRate: "87%", contact: "nate@rackline.ai", sample: true },
+  { id: 8, name: "Lake Country Outfitters",      state: "Minnesota",coordinates: [-94.2,  46.3], species: "Whitetail",             acres: "2,100 ac", rating: 4.8, reviews: 36, successRate: "89%", contact: "nate@rackline.ai", sample: true },
+  { id: 9, name: "Ozark Ridge Hunts",            state: "Missouri", coordinates: [-92.1,  37.5], species: "Whitetail",             acres: "3,300 ac", rating: 4.8, reviews: 41, successRate: "90%", contact: "nate@rackline.ai", sample: true },
+  { id:10, name: "Blue Ridge Whitetail",         state: "Ohio",     coordinates: [-82.0,  40.2], species: "Whitetail",             acres: "1,400 ac", rating: 4.6, reviews: 19, successRate: "83%", contact: "nate@rackline.ai", sample: true },
+];
 
 // ─── GEO SOURCE ───────────────────────────────────────────────────────────────
 const GEO_URL = "https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json";
@@ -191,12 +219,87 @@ function StateDetail({ fips, onClose }: { fips: string; onClose: () => void }) {
   );
 }
 
+// ─── OUTFITTER DETAIL PANEL ───────────────────────────────────────────────────
+function OutfitterDetail({ outfitter, onClose }: { outfitter: Outfitter; onClose: () => void }) {
+  return (
+    <div className="bg-white/5 border border-brand-orange/40 rounded-2xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {/* map pin icon */}
+          <svg className="w-4 h-4 text-brand-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
+          </svg>
+          <div>
+            <h3 className="text-white font-bold text-sm leading-tight">{outfitter.name}</h3>
+            <p className="text-white/40 text-xs">{outfitter.state}</p>
+          </div>
+        </div>
+        <button onClick={onClose} className="text-white/40 hover:text-white transition-colors p-1">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+
+      {/* Sample badge */}
+      {outfitter.sample && (
+        <div className="mx-5 mt-4 flex items-center gap-1.5 bg-brand-orange/10 border border-brand-orange/20 rounded-lg px-3 py-2">
+          <svg className="w-3 h-3 text-brand-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+          </svg>
+          <span className="text-brand-orange text-xs font-semibold">Sample listing — your outfitter could be here</span>
+        </div>
+      )}
+
+      <div className="grid grid-cols-2 gap-px bg-white/5 border-y border-white/10 mt-4">
+        <div className="bg-brand-dark px-5 py-3">
+          <div className="text-white/40 text-xs mb-0.5">Species</div>
+          <div className="text-white text-sm font-semibold">{outfitter.species}</div>
+        </div>
+        <div className="bg-brand-dark px-5 py-3">
+          <div className="text-white/40 text-xs mb-0.5">Property</div>
+          <div className="text-white text-sm font-semibold">{outfitter.acres}</div>
+        </div>
+        <div className="bg-brand-dark px-5 py-3">
+          <div className="text-white/40 text-xs mb-0.5">Success Rate</div>
+          <div className="text-brand-orange text-sm font-bold">{outfitter.successRate}</div>
+        </div>
+        <div className="bg-brand-dark px-5 py-3">
+          <div className="text-white/40 text-xs mb-0.5">Rating</div>
+          <div className="text-white text-sm font-bold">
+            ★ {outfitter.rating} <span className="text-white/30 font-normal">({outfitter.reviews})</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-5 py-4 space-y-2">
+        <a
+          href="mailto:nate@rackline.ai"
+          className="block w-full text-center bg-brand-orange hover:bg-brand-orange/90 text-white font-bold rounded-xl py-3 text-sm transition-colors"
+        >
+          Book This Hunt →
+        </a>
+        <a
+          href="/for-outfitters"
+          className="block w-full text-center bg-white/5 hover:bg-white/10 border border-white/10 text-white/60 hover:text-white font-semibold rounded-xl py-2.5 text-xs transition-colors"
+        >
+          List Your Outfitter on the Map
+        </a>
+      </div>
+    </div>
+  );
+}
+
 // ─── MAIN MAP COMPONENT ───────────────────────────────────────────────────────
 export default function TrophyMapClient() {
   const [metric, setMetric] = useState<"harvested" | "score">("harvested");
   const [selectedFips, setSelectedFips] = useState<string | null>(null);
   const [hovered, setHovered] = useState<string | null>(null);
   const [tooltip, setTooltip] = useState<{ x: number; y: number; fips: string } | null>(null);
+  const [showOutfitters, setShowOutfitters] = useState(true);
+  const [selectedOutfitter, setSelectedOutfitter] = useState<Outfitter | null>(null);
+  const [hoveredOutfitter, setHoveredOutfitter] = useState<Outfitter | null>(null);
+  const [outfitterTooltip, setOutfitterTooltip] = useState<{ x: number; y: number } | null>(null);
 
   const harvestedValues = Object.values(STATE_DATA).map((d) => d.harvested);
   const scoreValues = Object.values(STATE_DATA).map((d) => d.avgScore);
@@ -239,6 +342,21 @@ export default function TrophyMapClient() {
             <span>Low → High</span>
           </div>
         </div>
+        {/* Outfitter toggle */}
+        <button
+          onClick={() => setShowOutfitters((v) => !v)}
+          className={`flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-semibold border transition-all ${
+            showOutfitters
+              ? "bg-brand-orange/20 border-brand-orange/50 text-brand-orange"
+              : "bg-white/5 border-white/10 text-white/40 hover:text-white/60"
+          }`}
+        >
+          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20">
+            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
+          </svg>
+          {showOutfitters ? "Outfitters ON" : "Outfitters OFF"}
+        </button>
+
         {hovered && STATE_DATA[hovered] && (
           <div className="ml-auto text-white/60 text-xs">
             <span className="text-white font-semibold">{STATE_DATA[hovered].name}</span>
@@ -292,6 +410,43 @@ export default function TrophyMapClient() {
                   })
                 }
               </Geographies>
+
+              {/* ── OUTFITTER PINS ── */}
+              {showOutfitters && OUTFITTERS.map((o) => (
+                <Marker
+                  key={o.id}
+                  coordinates={o.coordinates}
+                  onMouseEnter={(evt) => {
+                    setHoveredOutfitter(o);
+                    setOutfitterTooltip({ x: evt.clientX, y: evt.clientY });
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredOutfitter(null);
+                    setOutfitterTooltip(null);
+                  }}
+                  onClick={() => {
+                    setSelectedOutfitter(selectedOutfitter?.id === o.id ? null : o);
+                    setSelectedFips(null); // clear state selection
+                  }}
+                >
+                  {/* Outer pulse ring */}
+                  <circle
+                    r={hoveredOutfitter?.id === o.id || selectedOutfitter?.id === o.id ? 10 : 8}
+                    fill={selectedOutfitter?.id === o.id ? "#D4521A" : "rgba(212,82,26,0.25)"}
+                    style={{ transition: "all 0.2s", cursor: "pointer" }}
+                  />
+                  {/* Pin dot */}
+                  <circle
+                    r={4}
+                    fill={selectedOutfitter?.id === o.id ? "#fff" : "#D4521A"}
+                    stroke="#0D1B0F"
+                    strokeWidth={1}
+                    style={{ cursor: "pointer" }}
+                  />
+                  {/* Pin shadow bottom */}
+                  <line x1={0} y1={4} x2={0} y2={9} stroke="#D4521A" strokeWidth={1.5} style={{ cursor: "pointer" }} />
+                </Marker>
+              ))}
             </ComposableMap>
           </div>
 
@@ -308,6 +463,23 @@ export default function TrophyMapClient() {
             </div>
           )}
 
+          {/* Outfitter tooltip */}
+          {hoveredOutfitter && outfitterTooltip && (
+            <div
+              className="fixed z-50 bg-brand-dark border border-brand-orange/40 rounded-xl px-4 py-3 pointer-events-none shadow-xl"
+              style={{ left: outfitterTooltip.x + 14, top: outfitterTooltip.y - 70 }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <svg className="w-3 h-3 text-brand-orange shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"/>
+                </svg>
+                <span className="text-white font-bold text-sm">{hoveredOutfitter.name}</span>
+              </div>
+              <div className="text-white/50 text-xs">{hoveredOutfitter.species} · {hoveredOutfitter.successRate} success</div>
+              <div className="text-white/30 text-xs mt-0.5">★ {hoveredOutfitter.rating} · Click for details</div>
+            </div>
+          )}
+
           {/* Sample data watermark */}
           <div className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-none">
             <div className="flex items-center gap-1.5 bg-black/60 border border-white/10 rounded-full px-3 py-1">
@@ -319,14 +491,21 @@ export default function TrophyMapClient() {
           </div>
 
           <div className="px-5 py-4 border-t border-white/10 flex items-center justify-between gap-4">
-            <p className="text-white/30 text-xs">Click any state to see county breakdown · <span className="text-brand-orange/60">Illustrative data only</span></p>
-            <a href="/download" className="shrink-0 text-brand-orange text-xs font-bold hover:underline">See live data in the app →</a>
+            <p className="text-white/30 text-xs">
+              Click a state for county data · Click a{" "}
+              <span className="text-brand-orange/60">● pin</span>
+              {" "}for outfitter info ·{" "}
+              <span className="text-brand-orange/60">Illustrative data only</span>
+            </p>
+            <a href="/download" className="shrink-0 text-brand-orange text-xs font-bold hover:underline">Live map in app →</a>
           </div>
         </div>
 
         {/* Sidebar */}
         <div className="flex flex-col gap-4">
-          {selectedFips && STATE_DATA[selectedFips] ? (
+          {selectedOutfitter ? (
+            <OutfitterDetail outfitter={selectedOutfitter} onClose={() => setSelectedOutfitter(null)} />
+          ) : selectedFips && STATE_DATA[selectedFips] ? (
             <StateDetail fips={selectedFips} onClose={() => setSelectedFips(null)} />
           ) : (
             <div className="bg-white/5 border border-brand-orange/20 rounded-2xl p-5">
