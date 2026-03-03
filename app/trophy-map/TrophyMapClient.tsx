@@ -97,6 +97,7 @@ function Leaderboard({ metric, onSelect, selected }: {
       <div className="px-5 py-4 border-b border-white/10">
         <h3 className="text-white font-bold text-sm">
           Top 10 States — {metric === "harvested" ? "Most Harvested" : "Highest Avg Score"}
+          <span className="text-white/30 text-xs font-normal italic ml-2">(sample)</span>
         </h3>
       </div>
       <div className="divide-y divide-white/5">
@@ -314,8 +315,19 @@ export default function TrophyMapClient() {
             </div>
           )}
 
-          <div className="px-5 py-4 border-t border-white/10">
-            <p className="text-white/30 text-xs">Click any state to see county breakdown · Data from verified rackline.ai public trophy room entries</p>
+          {/* Sample data watermark */}
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 pointer-events-none">
+            <div className="flex items-center gap-1.5 bg-black/60 border border-white/10 rounded-full px-3 py-1">
+              <svg className="w-3 h-3 text-brand-orange/80" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
+              </svg>
+              <span className="text-white/50 text-xs font-semibold tracking-wide">Sample data — not real scores</span>
+            </div>
+          </div>
+
+          <div className="px-5 py-4 border-t border-white/10 flex items-center justify-between gap-4">
+            <p className="text-white/30 text-xs">Click any state to see county breakdown · <span className="text-brand-orange/60">Illustrative data only</span></p>
+            <a href="/download" className="shrink-0 text-brand-orange text-xs font-bold hover:underline">See live data in the app →</a>
           </div>
         </div>
 
@@ -324,30 +336,65 @@ export default function TrophyMapClient() {
           {selectedFips && STATE_DATA[selectedFips] ? (
             <StateDetail fips={selectedFips} onClose={() => setSelectedFips(null)} />
           ) : (
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-5">
-              <div className="text-brand-orange text-xs font-semibold uppercase tracking-widest mb-3">How to Use</div>
-              <p className="text-white/50 text-sm leading-relaxed">
-                Click any state to see county-level trophy data including average B&C score and harvest counts per county.
-              </p>
-              <div className="mt-4 space-y-2">
-                {[
-                  { label: "Total Bucks in Map", value: "125,000+" },
-                  { label: "States Tracked", value: "48" },
-                  { label: "Avg Score (National)", value: "148.3\"" },
-                  { label: "Data Updated", value: "Daily" },
-                ].map((s) => (
-                  <div key={s.label} className="flex justify-between items-center py-2 border-b border-white/5 last:border-0">
-                    <span className="text-white/40 text-xs">{s.label}</span>
-                    <span className="text-white text-xs font-bold">{s.value}</span>
-                  </div>
-                ))}
+            <div className="bg-white/5 border border-brand-orange/20 rounded-2xl p-5">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="w-2 h-2 rounded-full bg-brand-orange animate-pulse" />
+                <div className="text-brand-orange text-xs font-bold uppercase tracking-widest">Preview Mode</div>
               </div>
+              <p className="text-white/60 text-sm leading-relaxed mb-4">
+                This map uses <span className="text-white font-semibold">sample data</span> to show what the feature will look like. Real trophy data from rackline.ai scores is coming soon.
+              </p>
+              <p className="text-white/40 text-xs leading-relaxed mb-4">
+                Click any state to explore the layout. County breakdowns and leaderboard rankings are illustrative — not based on real user scores.
+              </p>
+              <a
+                href="/download"
+                className="block w-full text-center bg-brand-orange hover:bg-brand-orange/90 text-white font-bold rounded-xl py-3 text-sm transition-colors"
+              >
+                Score Bucks to Build the Map
+              </a>
             </div>
           )}
 
           <Leaderboard metric={metric} onSelect={setSelectedFips} selected={selectedFips} />
         </div>
       </div>
+
+      {/* ── LIVE DATA CTA ── */}
+      <div className="mt-10 rounded-2xl bg-brand-green/20 border border-brand-green/30 p-8 text-center">
+        <div className="inline-flex items-center gap-2 bg-brand-orange/20 border border-brand-orange/30 rounded-full px-4 py-1.5 mb-4">
+          <div className="w-1.5 h-1.5 rounded-full bg-brand-orange animate-pulse" />
+          <span className="text-brand-orange text-xs font-bold uppercase tracking-widest">Coming Soon — Live Data</span>
+        </div>
+        <h3 className="text-white font-bold text-xl md:text-2xl mb-3">
+          Want to See the Real Map?
+        </h3>
+        <p className="text-white/50 text-sm max-w-lg mx-auto mb-6 leading-relaxed">
+          Every buck you score in rackline.ai gets added to the public trophy room. When enough hunters contribute, this map goes live with real county-level harvest data and verified B&C averages.
+        </p>
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href="https://apps.apple.com/us/app/rackline-ai-ai-deer-scoring/id6751832231"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-white text-brand-dark font-bold rounded-xl py-3 px-6 text-sm hover:bg-brand-cream transition-colors"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+            Score on iOS
+          </a>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.racklineai.assistant"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange/90 text-white font-bold rounded-xl py-3 px-6 text-sm transition-colors"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5v-17c0-.83.94-1.3 1.6-.8l14 8.5c.6.36.6 1.24 0 1.6l-14 8.5c-.66.5-1.6.03-1.6-.8z"/></svg>
+            Score on Android
+          </a>
+        </div>
+        <p className="text-white/25 text-xs mt-4">Free to download · No credit card required</p>
+      </div>
+
     </div>
   );
 }

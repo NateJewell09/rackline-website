@@ -307,15 +307,18 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-brand-orange mb-4">New Feature</span>
+              <span className="inline-block text-xs font-semibold uppercase tracking-widest text-brand-orange mb-4">Coming Soon</span>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                 Where Are the Giants Being Harvested?
               </h2>
               <p className="text-white/70 leading-relaxed mb-4">
-                125,000+ bucks scored through rackline.ai — now visualized on an interactive state and county heatmap. See which states are producing the most trophy deer, average B&C scores by county, and where the best hunting ground in America really is.
+                We&apos;re building a live state and county trophy heatmap powered by real rackline.ai scores. See which states produce the most trophy deer, average B&C by county, and where the best hunting ground in America really is.
               </p>
-              <p className="text-white/70 leading-relaxed mb-8">
-                All data sourced from verified public trophy room entries. Updated in real time as hunters score their bucks.
+              <p className="text-white/70 leading-relaxed mb-2">
+                Every buck you score in the app contributes to the map. Preview the feature now — live data launches when the community builds it.
+              </p>
+              <p className="text-brand-orange/70 text-sm font-semibold mb-8">
+                ↳ Currently showing sample data
               </p>
               <Link href="/trophy-map" className="inline-flex items-center gap-2 bg-brand-orange text-white font-bold rounded-xl py-4 px-8 hover:bg-brand-orange/90 transition-colors">
                 <Icon.Map />
