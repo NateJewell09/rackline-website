@@ -22,6 +22,9 @@ const config: Config = {
           // Cream / sage — light backgrounds & pills
           cream:       "#F2F0ED",
           "cream-dark": "#CEDAC8",
+          // Warm orange — secondary accent, shop CTAs, featured badges
+          amber:       "#D4521A",
+          "amber-light": "#F4845F",
           // Muted gray — secondary text
           "gray":      "#67717E",
         },

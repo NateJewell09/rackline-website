@@ -1,20 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-
-const DeerLogo = () => (
-  <svg className="w-7 h-7 text-brand-orange" viewBox="0 0 64 64" fill="currentColor">
-    <path d="M32 36c-6 0-11 4-13 9h26c-2-5-7-9-13-9z"/>
-    <path d="M32 34c3.3 0 6-3.1 6-7s-2.7-7-6-7-6 3.1-6 7 2.7 7 6 7z"/>
-    {/* Left antler */}
-    <path d="M26 24c0 0-4-3-6-7-1-2-1-4 0-5 1-1 2 0 3 2 1 2 1 4 2 5l1-4c0-2 1-3 2-3s1 1 1 3l-1 5 2-3c1-2 2-3 3-2s0 3-1 5c-2 3-4 5-6 4z" opacity="0.9"/>
-    {/* Right antler */}
-    <path d="M38 24c0 0 4-3 6-7 1-2 1-4 0-5-1-1-2 0-3 2-1 2-1 4-2 5l-1-4c0-2-1-3-2-3s-1 1-1 3l1 5-2-3c-1-2-2-3-3-2s0 3 1 5c2 3 4 5 6 4z" opacity="0.9"/>
-    {/* Ears */}
-    <ellipse cx="22" cy="21" rx="3" ry="4" transform="rotate(-20 22 21)" opacity="0.6"/>
-    <ellipse cx="42" cy="21" rx="3" ry="4" transform="rotate(20 42 21)" opacity="0.6"/>
-  </svg>
-);
+import Image from "next/image";
 
 const navLinks = [
   { href: "/trophy-map",          label: "Trophy Map" },
@@ -32,8 +19,15 @@ export default function Header() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <DeerLogo />
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <Image
+            src="/app-icon.png"
+            alt="rackline.ai"
+            width={36}
+            height={36}
+            className="rounded-xl shadow-sm"
+            priority
+          />
           <span className="text-white font-bold text-xl tracking-tight group-hover:text-brand-orange transition-colors">
             rackline<span className="text-brand-orange">.ai</span>
           </span>
